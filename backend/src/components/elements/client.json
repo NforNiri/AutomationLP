@@ -1,0 +1,13 @@
+{
+    "collectionName": "components_elements_clients",
+    "info": {
+        "displayName": "Client",
+        "icon": "user"
+    },
+    "options": {},
+    "attributes": {
+        "name": {
+            "type": "string"
+        }
+    }
+}

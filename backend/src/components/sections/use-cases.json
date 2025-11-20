@@ -1,0 +1,21 @@
+{
+    "collectionName": "components_sections_use_cases",
+    "info": {
+        "displayName": "UseCases",
+        "icon": "laptop-code"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "subtitle": {
+            "type": "text"
+        },
+        "cases": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.use-case"
+        }
+    }
+}

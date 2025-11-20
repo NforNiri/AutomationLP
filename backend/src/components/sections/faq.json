@@ -1,0 +1,18 @@
+{
+    "collectionName": "components_sections_faqs",
+    "info": {
+        "displayName": "FAQ",
+        "icon": "question-circle"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "questions": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.faq-item"
+        }
+    }
+}

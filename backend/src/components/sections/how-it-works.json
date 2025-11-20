@@ -1,0 +1,21 @@
+{
+    "collectionName": "components_sections_how_it_works",
+    "info": {
+        "displayName": "HowItWorks",
+        "icon": "cogs"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "subtitle": {
+            "type": "text"
+        },
+        "steps": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.process-step"
+        }
+    }
+}

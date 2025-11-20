@@ -1,0 +1,31 @@
+{
+    "collectionName": "components_elements_pricing_tiers",
+    "info": {
+        "displayName": "PricingTier",
+        "icon": "tag"
+    },
+    "options": {},
+    "attributes": {
+        "name": {
+            "type": "string"
+        },
+        "price": {
+            "type": "string"
+        },
+        "description": {
+            "type": "text"
+        },
+        "features": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.feature-item"
+        },
+        "cta": {
+            "type": "string"
+        },
+        "highlight": {
+            "type": "boolean",
+            "default": false
+        }
+    }
+}

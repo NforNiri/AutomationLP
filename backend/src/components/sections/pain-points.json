@@ -1,0 +1,21 @@
+{
+    "collectionName": "components_sections_pain_points",
+    "info": {
+        "displayName": "PainPoints",
+        "icon": "exclamation-circle"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "subtitle": {
+            "type": "text"
+        },
+        "points": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.pain-point"
+        }
+    }
+}

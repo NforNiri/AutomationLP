@@ -1,0 +1,66 @@
+{
+    "kind": "singleType",
+    "collectionName": "landing_pages",
+    "info": {
+        "singularName": "landing-page",
+        "pluralName": "landing-pages",
+        "displayName": "Landing Page",
+        "description": "Complete landing page content"
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "hero": {
+            "type": "component",
+            "repeatable": false,
+            "component": "sections.hero"
+        },
+        "socialProof": {
+            "type": "component",
+            "repeatable": false,
+            "component": "sections.social-proof"
+        },
+        "useCases": {
+            "type": "component",
+            "repeatable": false,
+            "component": "sections.use-cases"
+        },
+        "painPoints": {
+            "type": "component",
+            "repeatable": false,
+            "component": "sections.pain-points"
+        },
+        "whyUs": {
+            "type": "component",
+            "repeatable": false,
+            "component": "sections.why-us"
+        },
+        "howItWorks": {
+            "type": "component",
+            "repeatable": false,
+            "component": "sections.how-it-works"
+        },
+        "benefits": {
+            "type": "component",
+            "repeatable": false,
+            "component": "sections.benefits"
+        },
+        "pricing": {
+            "type": "component",
+            "repeatable": false,
+            "component": "sections.pricing"
+        },
+        "faq": {
+            "type": "component",
+            "repeatable": false,
+            "component": "sections.faq"
+        },
+        "cta": {
+            "type": "component",
+            "repeatable": false,
+            "component": "sections.cta"
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "collectionName": "components_elements_feature_comparisons",
+    "info": {
+        "displayName": "FeatureComparison",
+        "icon": "check-square"
+    },
+    "options": {},
+    "attributes": {
+        "name": {
+            "type": "string"
+        },
+        "generic": {
+            "type": "string"
+        },
+        "us": {
+            "type": "string"
+        }
+    }
+}

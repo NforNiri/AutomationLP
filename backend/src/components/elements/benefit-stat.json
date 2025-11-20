@@ -1,0 +1,22 @@
+{
+    "collectionName": "components_elements_benefit_stats",
+    "info": {
+        "displayName": "BenefitStat",
+        "icon": "chart-line"
+    },
+    "options": {},
+    "attributes": {
+        "value": {
+            "type": "string"
+        },
+        "label": {
+            "type": "string"
+        },
+        "description": {
+            "type": "text"
+        },
+        "icon": {
+            "type": "string"
+        }
+    }
+}
