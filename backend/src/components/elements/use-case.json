@@ -20,6 +20,14 @@
         },
         "icon": {
             "type": "string"
+        },
+        "illustration": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
         }
     }
 }

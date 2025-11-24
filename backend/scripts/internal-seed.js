@@ -1,7 +1,5 @@
-/**
- * Seed script to populate Strapi with default landing page content
- * Run with: STRAPI_TOKEN=your_token node scripts/seed.js
- */
+
+const { createStrapi } = require('@strapi/strapi');
 
 const defaultData = {
     hero: {
@@ -16,12 +14,12 @@ const defaultData = {
     socialProof: {
         title: "Trusted by businesses like yours.",
         clients: [
-            { name: "TechFlow Systems" },
-            { name: "Apex Logistics" },
-            { name: "Modern Realty" },
-            { name: "Growth Partners" },
-            { name: "Elevate Commerce" },
-            { name: "DataSphere" }
+            { name: "TechCorp" },
+            { name: "DataFlow" },
+            { name: "AutoSys" },
+            { name: "CloudBase" },
+            { name: "LogiTrack" },
+            { name: "PropHub" }
         ]
     },
     useCases: {
@@ -227,48 +225,32 @@ const defaultData = {
 };
 
 async function seed() {
-    const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337';
-    const STRAPI_TOKEN = process.env.STRAPI_TOKEN || '';
-
-    if (!STRAPI_TOKEN) {
-        console.error('❌ STRAPI_TOKEN environment variable is required.');
-        console.log('Please create an API token in Strapi Admin:');
-        console.log('1. Go to http://localhost:1337/admin');
-        console.log('2. Settings → API Tokens → Create new API Token');
-        console.log('3. Give it "Full Access" permissions');
-        console.log('4. Run: STRAPI_TOKEN=your_token_here node scripts/seed.js');
-        process.exit(1);
-    }
-
-    console.log('🌱 Starting seed process...\n');
-
     try {
-        // Create the landing page (POST for Single Types)
-        const response = await fetch(`${STRAPI_URL}/api/landing-page`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${STRAPI_TOKEN}`
-            },
-            body: JSON.stringify({ data: defaultData })
-        });
+        console.log('Loading Strapi...');
+        const strapi = createStrapi({ distDir: './dist' });
+        await strapi.load();
+        console.log('Strapi loaded.');
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Failed to seed data: ${response.status} ${response.statusText}\n${errorText}`);
+        const landingPage = await strapi.documents('api::landing-page.landing-page').findFirst();
+
+        if (landingPage) {
+            console.log('ℹ️ Landing Page data already exists. Deleting...');
+            await strapi.documents('api::landing-page.landing-page').delete({
+                documentId: landingPage.documentId,
+            });
         }
 
-        const result = await response.json();
-        console.log('✅ Landing page data created successfully!\n');
-        console.log('Data ID:', result.data?.id || 'N/A');
-
-        console.log('\n🎉 All done! The content has been created and should be auto-published.');
-        console.log('Check your admin panel at:', `${STRAPI_URL}/admin`);
-        console.log('View the API at:', `${STRAPI_URL}/api/landing-page?populate=deep`);
+        console.log('🌱 Seeding Landing Page data...');
+        const created = await strapi.documents('api::landing-page.landing-page').create({
+            data: defaultData,
+            status: 'published',
+        });
+        console.log(`✅ Landing Page data seeded! ID: ${created.documentId}`);
 
     } catch (error) {
-        console.error('❌ Error seeding data:', error.message);
-        process.exit(1);
+        console.error('❌ Error in seed script:', error);
+    } finally {
+        process.exit(0);
     }
 }
 

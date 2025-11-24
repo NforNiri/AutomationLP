@@ -1,143 +1,142 @@
 "use client";
 
-import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Building2, Truck, ShoppingBag, MessageSquare, Clock, CheckCircle2, LucideIcon } from "lucide-react";
+import { Building2, Truck, ShoppingBag, ArrowRight, LucideIcon } from "lucide-react";
 import { UseCasesSection } from "@/types";
+import Image from "next/image";
+
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+
+// Helper to get image URL from Strapi media object or static path
+function getImageUrl(image?: string | { url?: string }): string | null {
+    if (!image) return null;
+
+    // If it's already a string (static path or full URL), return it
+    if (typeof image === 'string') {
+        if (image.startsWith('http')) return image;
+        if (image.startsWith('/')) return `${STRAPI_URL}${image}`;
+        return image;
+    }
+
+    // If it's a Strapi media object, extract the URL
+    if (image && typeof image === 'object' && image.url) {
+        return image.url.startsWith('http') ? image.url : `${STRAPI_URL}${image.url}`;
+    }
+
+    return null;
+}
+
+// Helper to generate static image path from label
+function generateImagePath(label: string): string {
+    const filename = label.toLowerCase().replace(/\s+/g, '-');
+    return `/images/use-cases/${filename}.png`;
+}
 
 const iconMap: Record<string, LucideIcon> = {
-    "Building2": Building2,
-    "Truck": Truck,
-    "ShoppingBag": ShoppingBag,
-    "MessageSquare": MessageSquare,
+    Home: Building2,
+    Truck: Truck,
+    ShoppingCart: ShoppingBag,
 };
 
 const defaultData: UseCasesSection = {
     title: "Built for Your Industry",
-    subtitle: "We design specific automation architectures for high-touch industries.",
+    subtitle: "See how businesses like yours are saving hours every day",
     cases: [
         {
             id: "real-estate",
             label: "Real Estate",
-            icon: "Building2",
-            title: "Lead Response Automation",
-            description: "Instantly engage leads from Zillow, Realtor.com, and your website. Qualify them via SMS and book appointments automatically.",
-            stat: "30s Response Time",
+            title: "Automated Lead Qualification",
+            description: "Voice AI calls prospects, answers questions, and books viewings—while you focus on closings.",
+            stat: "12+ hours saved per week",
+            icon: "Home"
         },
         {
             id: "logistics",
             label: "Logistics",
-            icon: "Truck",
-            title: "Dispatch & Tracking",
-            description: "Automate driver notifications, route updates, and customer delivery alerts. Reduce manual check-in calls by 90%.",
-            stat: "90% Less Admin",
+            title: "Smart Dispatch System",
+            description: "AI routes deliveries, updates customers, and handles driver coordination automatically.",
+            stat: "30% faster deliveries",
+            icon: "Truck"
         },
         {
             id: "ecommerce",
             label: "E-commerce",
-            icon: "ShoppingBag",
-            title: "Customer Support AI",
-            description: "Handle returns, order status inquiries, and product questions 24/7 without hiring more support staff.",
-            stat: "24/7 Coverage",
-        },
-    ],
+            title: "Order Management Bot",
+            description: "Automate order confirmations, shipping updates, and customer inquiries across channels.",
+            stat: "85% support automation",
+            icon: "ShoppingCart"
+        }
+    ]
 };
 
 export function UseCases({ data }: { data?: UseCasesSection }) {
     const { title, subtitle, cases } = data || defaultData;
-    const [activeTab, setActiveTab] = React.useState(cases[0]?.id);
-
-    if (!cases || cases.length === 0) return null;
 
     return (
-        <section id="services" className="py-24 bg-transparent relative">
+        <section id="use-cases" className="py-24 bg-slate-50 dark:bg-slate-900/50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl lg:text-4xl font-heading font-bold text-slate-900 dark:text-white mb-4">
-                        {title.split("Your Industry")[0]} <span className="text-core-blue dark:text-electric-cyan">Your Industry</span>
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                        {title}
                     </h2>
-                    <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+                    <p className="text-lg text-slate-600 dark:text-slate-400">
                         {subtitle}
                     </p>
                 </div>
 
-                <div className="grid lg:grid-cols-12 gap-8">
-                    {/* Tabs Navigation */}
-                    <div className="lg:col-span-4 flex flex-col gap-4">
-                        {cases.map((tab) => {
-                            const Icon = iconMap[tab.icon] || MessageSquare;
-                            const isActive = activeTab === tab.id;
-                            return (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    className={`flex items-center gap-4 p-4 rounded-xl text-left transition-all duration-300 ${isActive
-                                        ? "bg-white dark:bg-slate-800 shadow-lg border-l-4 border-core-blue"
-                                        : "hover:bg-white/50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400"
-                                        }`}
-                                >
-                                    <div
-                                        className={`p-2 rounded-lg ${isActive
-                                            ? "bg-blue-100 dark:bg-blue-900/30 text-core-blue"
-                                            : "bg-slate-100 dark:bg-slate-800 text-slate-500"
-                                            }`}
-                                    >
-                                        <Icon className="w-6 h-6" />
+                <div className="grid md:grid-cols-3 gap-8">
+                    {cases.map((useCase) => {
+                        const Icon = iconMap[useCase.icon] || Building2;
+
+                        // Check if we have an image (either from Strapi or static fallback)
+                        const strapiImage = (useCase as any).illustration;
+                        // Try Strapi URL first, then fall back to local static path based on label
+                        const imageUrl = getImageUrl(strapiImage) || generateImagePath(useCase.label);
+
+                        return (
+                            <div
+                                key={useCase.id || useCase.label}
+                                className="group relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200 dark:border-slate-700 overflow-hidden"
+                            >
+                                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                                    <Icon className="w-24 h-24 text-core-blue" />
+                                </div>
+
+                                <div className="relative z-10">
+                                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                        <Icon className="w-6 h-6 text-core-blue dark:text-blue-400" />
                                     </div>
-                                    <span className={`font-semibold ${isActive ? "text-slate-900 dark:text-white" : ""}`}>
-                                        {tab.label}
-                                    </span>
-                                </button>
-                            );
-                        })}
-                    </div>
 
-                    {/* Content Area */}
-                    <div className="lg:col-span-8">
-                        <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-slate-700 h-full relative overflow-hidden">
-                            <AnimatePresence mode="wait">
-                                {cases.map((tab) => (
-                                    activeTab === tab.id && (
-                                        <motion.div
-                                            key={tab.id}
-                                            initial={{ opacity: 0, x: 20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            exit={{ opacity: 0, x: -20 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="h-full flex flex-col justify-center"
-                                        >
-                                            <div className="flex items-center gap-3 mb-6">
-                                                <div className="px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-sm font-medium flex items-center gap-2">
-                                                    <CheckCircle2 className="w-4 h-4" />
-                                                    Verified Scenario
-                                                </div>
-                                            </div>
+                                    {imageUrl && (
+                                        <div className="mb-6 rounded-xl overflow-hidden aspect-video relative">
+                                            <Image
+                                                src={imageUrl}
+                                                alt={useCase.title}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                    )}
 
-                                            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
-                                                {tab.title}
-                                            </h3>
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700/50 text-xs font-medium text-slate-600 dark:text-slate-300 mb-4">
+                                        {useCase.label}
+                                    </div>
 
-                                            <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
-                                                {tab.description}
-                                            </p>
+                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
+                                        {useCase.title}
+                                    </h3>
 
-                                            <div className="p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-700">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                                                        <Clock className="w-6 h-6 text-core-blue" />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-sm text-slate-500 dark:text-slate-400">Impact</p>
-                                                        <p className="text-xl font-bold text-slate-900 dark:text-white">{tab.stat}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    )
-                                ))}
-                            </AnimatePresence>
-                        </div>
-                    </div>
+                                    <p className="text-slate-600 dark:text-slate-400 mb-6 line-clamp-3">
+                                        {useCase.description}
+                                    </p>
+
+                                    <div className="flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                                        {useCase.stat}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </section>

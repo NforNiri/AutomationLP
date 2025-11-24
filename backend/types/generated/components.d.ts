@@ -21,7 +21,8 @@ export interface ElementsClient extends Struct.ComponentSchema {
     icon: 'user';
   };
   attributes: {
-    name: Schema.Attribute.String;
+    logo: Schema.Attribute.Media<'images'>;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -68,6 +69,7 @@ export interface ElementsPainPoint extends Struct.ComponentSchema {
     icon: 'frown';
   };
   attributes: {
+    customIcon: Schema.Attribute.Media<'images'>;
     question: Schema.Attribute.String;
     solution: Schema.Attribute.Text;
   };
@@ -98,6 +100,7 @@ export interface ElementsProcessStep extends Struct.ComponentSchema {
   attributes: {
     description: Schema.Attribute.Text;
     icon: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
     title: Schema.Attribute.String;
   };
 }
@@ -111,6 +114,7 @@ export interface ElementsUseCase extends Struct.ComponentSchema {
   attributes: {
     description: Schema.Attribute.Text;
     icon: Schema.Attribute.String;
+    illustration: Schema.Attribute.Media<'images'>;
     label: Schema.Attribute.String;
     stat: Schema.Attribute.String;
     title: Schema.Attribute.String;

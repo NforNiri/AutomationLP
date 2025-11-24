@@ -11,6 +11,14 @@
         },
         "solution": {
             "type": "text"
+        },
+        "customIcon": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
         }
     }
 }

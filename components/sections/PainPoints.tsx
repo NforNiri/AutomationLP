@@ -3,7 +3,8 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { AlertCircle, Check } from "lucide-react";
-import { PainPointsSection } from "@/types";
+import { PainPointsSection, PainPoint } from "@/types";
+import Image from "next/image";
 
 const defaultData: PainPointsSection = {
     title: "You are the bottleneck.",
@@ -31,6 +32,27 @@ const defaultData: PainPointsSection = {
         },
     ],
 };
+
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+
+// Helper to get image URL from Strapi media object or static path
+function getImageUrl(image?: string | { url?: string }): string | null {
+    if (!image) return null;
+
+    // If it's already a string (static path or full URL), return it
+    if (typeof image === 'string') {
+        if (image.startsWith('http')) return image;
+        if (image.startsWith('/')) return `${STRAPI_URL}${image}`;
+        return image;
+    }
+
+    // If it's a Strapi media object, extract the URL
+    if (image && typeof image === 'object' && image.url) {
+        return image.url.startsWith('http') ? image.url : `${STRAPI_URL}${image.url}`;
+    }
+
+    return null;
+}
 
 export function PainPoints({ data }: { data?: PainPointsSection }) {
     const { title, subtitle, points } = data || defaultData;
@@ -61,8 +83,9 @@ export function PainPoints({ data }: { data?: PainPointsSection }) {
     );
 }
 
-function PainPointCard({ item }: { item: { question: string; solution: string } }) {
+function PainPointCard({ item }: { item: PainPoint }) {
     const [isHovered, setIsHovered] = React.useState(false);
+    const imageUrl = getImageUrl(item.customIcon);
 
     return (
         <motion.div
@@ -79,9 +102,20 @@ function PainPointCard({ item }: { item: { question: string; solution: string } 
             >
                 {/* Front */}
                 <div className="absolute inset-0 backface-hidden w-full h-full bg-white/70 dark:bg-white/5 backdrop-blur-lg border border-slate-200 dark:border-white/10 rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-xl">
-                    <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-6 text-red-500">
-                        <AlertCircle className="w-6 h-6" />
-                    </div>
+                    {imageUrl ? (
+                        <div className="w-16 h-16 mb-6 relative">
+                            <Image
+                                src={imageUrl}
+                                alt={item.question}
+                                fill
+                                className="object-contain"
+                            />
+                        </div>
+                    ) : (
+                        <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-6 text-red-500">
+                            <AlertCircle className="w-6 h-6" />
+                        </div>
+                    )}
                     <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                         {item.question}
                     </h3>

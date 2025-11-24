@@ -36,7 +36,7 @@ export function CallToAction({ data }: { data?: CTASection }) {
 
                 <Link
                     href={buttonLink}
-                    className="inline-flex items-center gap-3 bg-white text-core-blue px-10 py-5 rounded-xl text-xl font-bold shadow-2xl hover:scale-105 transition-transform duration-300 group"
+                    className="inline-flex items-center gap-3 bg-white text-blue-600 px-10 py-5 rounded-xl text-xl font-bold shadow-2xl hover:scale-105 transition-transform duration-300 group"
                 >
                     {buttonText}
                     <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />

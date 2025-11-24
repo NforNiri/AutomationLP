@@ -25,7 +25,7 @@ export interface HeroSection {
 
 export interface SocialProofSection {
     title: string;
-    clients: { name: string }[];
+    clients: { name: string; logo?: string | { url?: string } }[];
 }
 
 export interface UseCase {
@@ -35,6 +35,7 @@ export interface UseCase {
     description: string;
     stat: string;
     icon: string; // Lucide icon name
+    illustration?: string | { url?: string };
 }
 
 export interface UseCasesSection {
@@ -47,6 +48,7 @@ export interface PainPoint {
     id: number;
     question: string;
     solution: string;
+    customIcon?: string | { url?: string };
 }
 
 export interface PainPointsSection {
@@ -72,6 +74,7 @@ export interface ProcessStep {
     title: string;
     description: string;
     icon: string;
+    image?: string | { url?: string };
 }
 
 export interface HowItWorksSection {

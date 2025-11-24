@@ -26,7 +26,10 @@ export async function getStrapiData(): Promise<LandingPageData | null> {
         }
 
         const json = await res.json();
-        return json.data.attributes;
+        console.log('Strapi response:', JSON.stringify(json).substring(0, 200));
+
+        // Strapi v5 returns data directly, not wrapped in attributes
+        return json.data || null;
     } catch (error) {
         console.error("Strapi connection error:", error);
         return null;

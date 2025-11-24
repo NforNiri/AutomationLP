@@ -2,22 +2,22 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::landing-page.landing-page', ({ strapi }) => ({
     async find(ctx) {
+        strapi.log.info('🔍 Landing Page Controller HIT!');
         try {
-            const populateQuery = ctx.query.populate;
-            const populate = populateQuery === 'deep' ? 'deep' : '*';
-
             const entity = await strapi.documents('api::landing-page.landing-page').findFirst({
-                populate: populate,
+                populate: ctx.query.populate || '*',
             });
 
+            strapi.log.info(`📄 Entity found: ${entity ? 'YES' : 'NO'}`);
+
             if (!entity) {
-                return ctx.notFound('Landing page not found');
+                return ctx.notFound('Landing page not found in DB');
             }
 
             return { data: entity };
         } catch (error) {
-            strapi.log.error('Error fetching landing page:', error);
-            return ctx.badRequest('Failed to fetch landing page');
+            strapi.log.error('❌ Controller Error:', error);
+            return ctx.internalServerError(error);
         }
-    },
+    }
 }));

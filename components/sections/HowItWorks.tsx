@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Search, Code2, Rocket, LucideIcon } from "lucide-react";
 import { HowItWorksSection } from "@/types";
+import Image from "next/image";
 
 const iconMap: Record<string, LucideIcon> = {
     "Search": Search,
@@ -36,6 +37,27 @@ const defaultData: HowItWorksSection = {
     ],
 };
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+
+// Helper to get image URL from Strapi media object or static path
+function getImageUrl(image?: string | { url?: string }): string | null {
+    if (!image) return null;
+
+    // If it's already a string (static path or full URL), return it
+    if (typeof image === 'string') {
+        if (image.startsWith('http')) return image;
+        if (image.startsWith('/')) return `${STRAPI_URL}${image}`;
+        return image;
+    }
+
+    // If it's a Strapi media object, extract the URL
+    if (image && typeof image === 'object' && image.url) {
+        return image.url.startsWith('http') ? image.url : `${STRAPI_URL}${image.url}`;
+    }
+
+    return null;
+}
+
 export function HowItWorks({ data }: { data?: HowItWorksSection }) {
     const { title, subtitle, steps } = data || defaultData;
 
@@ -58,6 +80,8 @@ export function HowItWorks({ data }: { data?: HowItWorksSection }) {
                     <div className="grid lg:grid-cols-3 gap-12">
                         {steps.map((step, index) => {
                             const Icon = iconMap[step.icon] || Search;
+                            const imageUrl = getImageUrl(step.image);
+
                             return (
                                 <motion.div
                                     key={step.id}
@@ -67,9 +91,20 @@ export function HowItWorks({ data }: { data?: HowItWorksSection }) {
                                     viewport={{ once: true }}
                                     className="relative z-10 bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center"
                                 >
-                                    <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-6 text-core-blue dark:text-blue-400 shadow-inner">
-                                        <Icon className="w-8 h-8" />
-                                    </div>
+                                    {imageUrl ? (
+                                        <div className="w-full aspect-video relative mb-6 rounded-xl overflow-hidden shadow-sm">
+                                            <Image
+                                                src={imageUrl}
+                                                alt={step.title}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-6 text-core-blue dark:text-blue-400 shadow-inner">
+                                            <Icon className="w-8 h-8" />
+                                        </div>
+                                    )}
 
                                     <div className="absolute -top-4 -right-4 w-10 h-10 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full flex items-center justify-center font-bold text-sm border-4 border-white dark:border-slate-800">
                                         {step.id}
