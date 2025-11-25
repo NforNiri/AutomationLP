@@ -74,8 +74,8 @@ export function PainPoints({ data }: { data?: PainPointsSection }) {
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {points.map((item) => (
-                        <PainPointCard key={item.id} item={item} />
+                    {points.map((item, index) => (
+                        <PainPointCard key={item.id} item={item} index={index} />
                     ))}
                 </div>
             </div>
@@ -83,9 +83,11 @@ export function PainPoints({ data }: { data?: PainPointsSection }) {
     );
 }
 
-function PainPointCard({ item }: { item: PainPoint }) {
+function PainPointCard({ item, index }: { item: PainPoint; index: number }) {
     const [isHovered, setIsHovered] = React.useState(false);
-    const imageUrl = getImageUrl(item.customIcon);
+    // Fallback to static image if Strapi image is missing
+    const staticImage = `/images/pain-points/icon-${index + 1}.png`;
+    const imageUrl = getImageUrl(item.customIcon) || staticImage;
 
     return (
         <motion.div

@@ -80,7 +80,9 @@ export function HowItWorks({ data }: { data?: HowItWorksSection }) {
                     <div className="grid lg:grid-cols-3 gap-12">
                         {steps.map((step, index) => {
                             const Icon = iconMap[step.icon] || Search;
-                            const imageUrl = getImageUrl(step.image);
+                            // Fallback to static image if Strapi image is missing
+                            const staticImage = `/images/how-it-works/step-${index + 1}.png`;
+                            const imageUrl = getImageUrl(step.image) || staticImage;
 
                             return (
                                 <motion.div

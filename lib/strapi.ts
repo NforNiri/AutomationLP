@@ -1,3 +1,4 @@
+import qs from "qs";
 import { LandingPageData } from "@/types";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
@@ -11,11 +12,28 @@ export async function getStrapiData(): Promise<LandingPageData | null> {
             return null;
         }
 
-        const res = await fetch(`${STRAPI_URL}/api/landing-page?populate=deep`, {
+        const query = qs.stringify({
+            populate: {
+                hero: { populate: '*' },
+                socialProof: { populate: { clients: { populate: { logo: { populate: '*' } } } } },
+                useCases: { populate: { cases: { populate: { illustration: { populate: '*' } } } } },
+                howItWorks: { populate: { steps: { populate: { image: { populate: '*' } } } } },
+                painPoints: { populate: { points: { populate: { customIcon: { populate: '*' } } } } },
+                whyUs: { populate: '*' },
+                benefits: { populate: '*' },
+                pricing: { populate: '*' },
+                faq: { populate: '*' },
+                cta: { populate: '*' },
+            },
+        }, {
+            encodeValuesOnly: true,
+        });
+
+        const res = await fetch(`${STRAPI_URL}/api/landing-page?${query}`, {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
-            next: { revalidate: 60 },
+            cache: 'no-store',
         });
 
         if (!res.ok) {

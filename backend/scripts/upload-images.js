@@ -82,6 +82,7 @@ async function uploadAllLogos() {
 
         if (!getResponse.ok) throw new Error('Failed to fetch landing page data');
         const currentData = await getResponse.json();
+        console.log('Current HowItWorks Steps:', JSON.stringify(currentData.data.howItWorks.steps, null, 2));
 
         // --- Link Client Logos ---
         const socialProof = currentData.data.socialProof;
@@ -103,7 +104,7 @@ async function uploadAllLogos() {
         console.log('\n🖼️  Processing Use Case illustrations...');
         const useCaseDir = path.join(__dirname, '../../public/images/use-cases');
         // We expect these files to exist now (created as placeholders if needed)
-        const useCaseFiles = ['real-estate.png', 'logistics.png', 'ecommerce.png'];
+        const useCaseFiles = ['real-estate.png', 'logistics.png', 'e-commerce.png'];
 
         const useCases = currentData.data.useCases.cases;
         let updatedUseCasesCount = 0;
@@ -118,7 +119,7 @@ async function uploadAllLogos() {
                 if (result) {
                     // Match file to label
                     let label = file.replace('.png', '').replace(/-/g, ' ');
-                    if (label === 'ecommerce') label = 'E-commerce';
+                    if (label === 'e commerce') label = 'E-commerce';
                     if (label === 'real estate') label = 'Real Estate';
                     if (label === 'logistics') label = 'Logistics';
 
