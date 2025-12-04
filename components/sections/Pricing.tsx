@@ -68,17 +68,17 @@ export function Pricing({ data }: { data?: PricingSection }) {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
+                <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {tiers.map((tier, index) => (
                         <div
                             key={index}
-                            className={`relative rounded-2xl p-8 transition-all duration-300 ${tier.highlight
-                                ? "bg-white dark:bg-slate-800 shadow-2xl border-2 border-core-blue scale-105 z-10"
+                            className={`relative rounded-2xl p-8 transition-all duration-300 h-full flex flex-col ${tier.highlight
+                                ? "bg-white dark:bg-slate-800 shadow-2xl border-2 border-core-blue z-10"
                                 : "bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 hover:border-blue-200 dark:hover:border-blue-800"
                                 }`}
                         >
                             {tier.highlight && (
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-core-blue text-white px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide shadow-lg">
+                                <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#4169E1] text-white px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide shadow-lg z-20 border-[6px] border-[#0B1120]">
                                     Best Value
                                 </div>
                             )}
@@ -100,10 +100,10 @@ export function Pricing({ data }: { data?: PricingSection }) {
                                 </p>
                             </div>
 
-                            <ul className="space-y-4 mb-8">
+                            <ul className="space-y-4 mb-8 flex-1">
                                 {tier.features.map((feature, idx) => (
                                     <li key={idx} className="flex items-start gap-3">
-                                        <div className="mt-1 p-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                                        <div className="mt-1 p-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 shrink-0">
                                             <Check className="w-3 h-3" />
                                         </div>
                                         <span className="text-slate-600 dark:text-slate-300 text-sm">
@@ -115,7 +115,7 @@ export function Pricing({ data }: { data?: PricingSection }) {
 
                             <Link
                                 href="#contact"
-                                className={`w-full inline-flex justify-center items-center gap-2 py-3 rounded-xl font-semibold transition-all ${tier.highlight
+                                className={`w-full inline-flex justify-center items-center gap-2 py-3 rounded-xl font-semibold transition-all mt-auto ${tier.highlight
                                     ? "bg-core-blue hover:bg-blue-600 text-white shadow-lg shadow-blue-500/25"
                                     : "bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-900 dark:text-white"
                                     }`}

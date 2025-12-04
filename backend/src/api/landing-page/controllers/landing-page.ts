@@ -8,16 +8,16 @@ export default factories.createCoreController('api::landing-page.landing-page', 
             // Build proper populate object for deep population
             const entity = await strapi.documents('api::landing-page.landing-page').findFirst({
                 populate: {
-                    hero: true,
-                    socialProof: { populate: { clients: true } },
-                    useCases: { populate: { cases: true } },
-                    painPoints: { populate: { points: true } },
-                    whyUs: { populate: { features: true } },
-                    howItWorks: { populate: { steps: true } },
-                    benefits: { populate: { stats: true } },
-                    pricing: { populate: { tiers: { populate: { features: true } } } },
-                    faq: { populate: { questions: true } },
-                    cta: true,
+                    hero: { populate: '*' },
+                    socialProof: { populate: { clients: { populate: { logo: { populate: '*' } } } } },
+                    useCases: { populate: { cases: { populate: { illustration: { populate: '*' } } } } },
+                    painPoints: { populate: { points: { populate: { customIcon: { populate: '*' } } } } },
+                    whyUs: { populate: { features: { populate: '*' } } },
+                    howItWorks: { populate: { steps: { populate: { image: { populate: '*' } } } } },
+                    benefits: { populate: { stats: { populate: '*' } } },
+                    pricing: { populate: { tiers: { populate: { features: { populate: '*' } } } } },
+                    faq: { populate: { questions: { populate: '*' } } },
+                    cta: { populate: '*' },
                 },
             });
 
@@ -27,7 +27,7 @@ export default factories.createCoreController('api::landing-page.landing-page', 
                 return ctx.notFound('Landing page not found in DB');
             }
 
-            return { data: entity };
+            return { data: { ...entity, _debug: "Controller Active v2" } };
         } catch (error) {
             strapi.log.error('❌ Controller Error:', error);
             return ctx.internalServerError(error);

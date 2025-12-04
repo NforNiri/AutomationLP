@@ -20,7 +20,7 @@ export function ContactForm() {
     };
 
     return (
-        <section id="contact" className="py-24 relative overflow-hidden">
+        <section id="contact" className="py-24 relative overflow-hidden scroll-mt-32">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl lg:text-4xl font-heading font-bold text-white mb-4">

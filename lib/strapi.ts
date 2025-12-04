@@ -6,34 +6,18 @@ const STRAPI_TOKEN = process.env.NEXT_PUBLIC_STRAPI_TOKEN || "";
 
 export async function getStrapiData(): Promise<LandingPageData | null> {
     try {
-        // Check if URL is defined
-        if (!STRAPI_URL) {
-            console.warn("NEXT_PUBLIC_STRAPI_URL is not defined. Using fallback data.");
-            return null;
-        }
-
         const query = qs.stringify({
-            populate: {
-                hero: { populate: '*' },
-                socialProof: { populate: { clients: { populate: { logo: { populate: '*' } } } } },
-                useCases: { populate: { cases: { populate: { illustration: { populate: '*' } } } } },
-                howItWorks: { populate: { steps: { populate: { image: { populate: '*' } } } } },
-                painPoints: { populate: { points: { populate: { customIcon: { populate: '*' } } } } },
-                whyUs: { populate: '*' },
-                benefits: { populate: '*' },
-                pricing: { populate: '*' },
-                faq: { populate: '*' },
-                cta: { populate: '*' },
-            },
-        }, {
-            encodeValuesOnly: true,
+            populate: "deep",
         });
 
-        const res = await fetch(`${STRAPI_URL}/api/landing-page?${query}`, {
+        const url = `${STRAPI_URL}/api/landing-page?${query}`;
+        console.log("Fetching Strapi data from:", url);
+
+        const res = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${STRAPI_TOKEN}`,
             },
-            cache: 'no-store',
+            cache: "no-store", // Ensure fresh data for debugging
         });
 
         if (!res.ok) {

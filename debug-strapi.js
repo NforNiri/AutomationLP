@@ -47,6 +47,9 @@ async function checkData() {
             return;
         }
 
+        console.log('--- Controller Status ---');
+        console.log('Debug Flag:', json.data._debug_service || 'MISSING');
+
         console.log('--- How It Works Steps ---');
         const steps = json.data.howItWorks?.steps || [];
         steps.forEach(step => {
